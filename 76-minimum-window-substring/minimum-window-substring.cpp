@@ -1,64 +1,40 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
+        unordered_map<char, int> mp;
+        int requriedcount=t.length();
+        int high;
+        int low=0;
+        int start =0;
+        int currwindow;
+        int minwindow=INT_MAX;
 
-        unordered_map<char, int> need;
-        unordered_map<char, int> window;
-
-        // Count characters required from t
-        for (char c : t) {
-            need[c]++;
+        for(int i=0;i<t.size();i++){
+            mp[t[i]]++;
         }
-
-        int low = 0;
-        int high = 0;
-
-        int formed = 0;
-        int required = need.size();
-
-        int minLen = INT_MAX;
-        int start = 0;
-
-        while (high < s.size()) {
-
-            // Add s[high] to window
-            char c = s[high];
-            window[c]++;
-
-            // This character has now satisfied its requirement
-            if (need.count(c) && window[c] == need[c]) {
-                formed++;
+        for(high=0;high<s.length();high++){
+            if(mp[s[high]]>0){
+                requriedcount--;
             }
-
-            // Window is valid
-            while (formed == required) {
-
-                // Update minimum answer
-                if (high - low + 1 < minLen) {
-                    minLen = high - low + 1;
-                    start = low;
+            mp[s[high]]--;
+            while(requriedcount==0){
+                currwindow=high-low+1;
+                if(currwindow<minwindow){
+                    minwindow=currwindow;
+                    start = low ;
                 }
-
-                // Remove s[low]
-                char leftChar = s[low];
-                window[leftChar]--;
-
-                // Window became invalid
-                if (need.count(leftChar) &&
-                    window[leftChar] < need[leftChar]) {
-                    formed--;
+                mp[s[low]]++;
+                if(mp[s[low]]>0){
+                    requriedcount++;
                 }
-
                 low++;
+
             }
 
-            high++;
         }
-
-        if (minLen == INT_MAX) {
+        if(minwindow==INT_MAX){
             return "";
         }
-
-        return s.substr(start, minLen);
+        return s.substr(start,minwindow);
     }
 };
