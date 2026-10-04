@@ -31,34 +31,34 @@ public:
             j++;
         }
         reverse(neg.begin(), neg.end());
-        // Reset IJK because they are at the last index while doing the square
+        vector<int> res(n+m);
         i=0;
         j=0;
-        k=0;
+        int l=0;
         while(i<n && j<m){
             if(pos[i]<neg[j]){
-                nums1[k]=pos[i];
+                res[l]=pos[i];
                 i++;
-                k++;
+                l++;
             }
             else{
-                nums1[k]=neg[j];
+                res[l]=neg[j];
                 j++;
-                k++;
+                l++;
             }
         }
         
         while(i<n){
-            nums1[k]=pos[i];
+            res[l]=pos[i];
                 i++;
-                k++;
+                l++;
         }
         while(j<m){
-            nums1[k]=neg[j];
+            res[l]=neg[j];
                 j++;
-                k++;
+                l++;
         }
-        return nums1;
+        return res;
 
     }
 };
